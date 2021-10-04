@@ -2,7 +2,7 @@ import React from "react";
 import { StyleSheet, SafeAreaView, Image, View, Text } from "react-native";
 import Pressable from "react-native/Libraries/Components/Pressable/Pressable";
 
-const Welcome = () => {
+const Welcome = ({ navigation }) => {
 	return (
 		<SafeAreaView style={{ flex: 1, backgroundColor: "#ffffff" }}>
 			<Image
@@ -27,7 +27,7 @@ const Welcome = () => {
 				<Text style={style.textStyle}>View in few click</Text>
 			</View>
 			<View style={{ flex: 1, justifyContent: "flex-end", paddingBottom: 40 }}>
-				<Pressable>
+				<Pressable onPress={() => navigation.navigate("Main")}>
 					<View style={style.btn}>
 						<Text style={{ color: "#ffffff" }}>Get Started</Text>
 					</View>

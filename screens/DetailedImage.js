@@ -4,11 +4,14 @@ import {
 	SafeAreaView,
 	StyleSheet,
 	Text,
-	View
+	View,
+	Image,
+	Pressable
 } from "react-native";
 import Icon from "react-native-vector-icons/FontAwesome";
 
-function DetailedImage() {
+function DetailedImage({ navigation, ...props }) {
+	const data = props.route.params.image;
 	return (
 		<SafeAreaView style={{ flex: 1, backgroundColor: "#ffffff" }}>
 			<View style={style.backgroundImageContainer}>
@@ -16,18 +19,67 @@ function DetailedImage() {
 					style={style.backgroundImage}
 					source={{ uri: data.largeImageURL }}>
 					<View style={style.header}>
-						<View style={style.headerBtn}>
-							<Icon name="chevron-left" size={20} />
-						</View>
+						<Pressable onPress={() => navigation.navigate("Main")}>
+							<View style={style.headerBtn}>
+								<Icon name="chevron-left" size={20} />
+							</View>
+						</Pressable>
+
 						<View style={style.headerBtn}>
 							<Icon name="heart" size={20} color="red" />
 						</View>
 					</View>
 				</ImageBackground>
 			</View>
+			<View style={style.detailsContainer}>
+				<View style={style.userInfo}>
+					<Image style={style.userImg} source={{ uri: data.userImageURL }} />
+					<Text style={style.userName}>{data.user}</Text>
+				</View>
+				<View style={style.userInfo}>
+					<Icon name="eye" size={20} color="black" />
+					<Text style={{ fontSize: 15, marginHorizontal: 10, color: "grey" }}>
+						{data.views}
+					</Text>
+					<Icon name="thumbs-up" size={20} color="black" />
+					<Text style={{ fontSize: 15, marginHorizontal: 10, color: "grey" }}>
+						{data.likes}
+					</Text>
+					<Icon name="comment" size={20} color="black" />
+					<Text style={{ fontSize: 15, marginLeft: 10, color: "grey" }}>
+						{data.comments}
+					</Text>
+				</View>
+				<View style={style.userInfo}>
+					{data.tags.split(",").map(o => (
+						<Tag tag={o} key={o} />
+					))}
+				</View>
+				<View style={style.userInfo}>
+					<Icon name="area-chart" size={20} color="black" />
+					<Text style={{ fontSize: 20, fontWeight: "bold" }}>
+						{" " + data.imageWidth + " x " + data.imageHeight}
+					</Text>
+				</View>
+
+				<View style={style.userInfo}>
+					<Icon name="database" size={20} color="black" />
+					<Text style={{ fontSize: 20, fontWeight: "bold" }}>
+						{" " + parseInt(data.imageSize / 1024) + " MB"}
+					</Text>
+				</View>
+			</View>
 		</SafeAreaView>
 	);
 }
+
+const Tag = ({ tag }) => {
+	return (
+		<View style={style.tag}>
+			<Text style={{ color: "#ffffff" }}>{tag}</Text>
+		</View>
+	);
+};
 
 const style = StyleSheet.create({
 	backgroundImageContainer: {
@@ -55,36 +107,38 @@ const style = StyleSheet.create({
 		borderRadius: 5,
 		justifyContent: "center",
 		alignItems: "center"
+	},
+	detailsContainer: {
+		flex: 1,
+		paddingHorizontal: 40,
+		marginTop: 80
+	},
+	userInfo: {
+		flexDirection: "row",
+		justifyContent: "flex-start",
+		alignItems: "center",
+		marginVertical: 10
+	},
+	userImg: {
+		width: 50,
+		height: 50,
+		borderRadius: 50,
+		marginRight: 20
+	},
+	userName: {
+		fontSize: 30,
+		fontWeight: "bold"
+	},
+	tag: {
+		backgroundColor: "#63A4F7",
+		color: "#ffffff",
+		padding: 10,
+		height: 30,
+		borderRadius: 10,
+		alignItems: "center",
+		justifyContent: "center",
+		marginRight: 5
 	}
 });
-
-const data = {
-	collections: 629,
-	comments: 50,
-	downloads: 143725,
-	id: 2791980,
-	imageHeight: 2955,
-	imageSize: 2248486,
-	imageWidth: 4446,
-	largeImageURL:
-		"https://pixabay.com/get/g976d0de9f7b253fa18f09104df9487ddfdca7b5687ea02307a56c70c9be8178261c3ebbe6b8e992d3cac5010050f294a32bf1de64bf2880cd69bd112fbd6c22a_1280.jpg",
-	likes: 505,
-	pageURL: "https://pixabay.com/photos/tiger-eyes-bathing-submerged-2791980/",
-	previewHeight: 99,
-	previewURL:
-		"https://cdn.pixabay.com/photo/2017/09/27/12/55/tiger-2791980_150.jpg",
-	previewWidth: 150,
-	tags: "tiger, eyes, bathing",
-	type: "photo",
-	user: "IanZA",
-	userImageURL:
-		"https://cdn.pixabay.com/user/2017/09/27/13-12-29-269_250x250.jpg",
-	user_id: 2026973,
-	views: 192691,
-	webformatHeight: 425,
-	webformatURL:
-		"https://pixabay.com/get/g49ecc423bbb0f18d9e697192f854c5548de1d5b8c0370abe827c20ff0889875f36faf15b90a1f3af26d0053dfe6755ae_640.jpg",
-	webformatWidth: 640
-};
 
 export default DetailedImage;

@@ -1,14 +1,18 @@
 import React from "react";
-import { StyleSheet, View, Image, Dimensions } from "react-native";
+import { StyleSheet, View, Image, Dimensions, Pressable } from "react-native";
 
-const Card = ({ image }) => {
-	console.log(image);
+const Card = ({ image, navigation }) => {
 	return (
 		<View style={style.card}>
-			<Image
-				style={style.cardImage}
-				source={{ uri: image.item.largeImageURL }}
-			/>
+			<Pressable
+				onPress={() =>
+					navigation.navigate("DetailedImage", { image: image.item })
+				}>
+				<Image
+					style={style.cardImage}
+					source={{ uri: image.item.previewURL }}
+				/>
+			</Pressable>
 		</View>
 	);
 };
@@ -20,7 +24,8 @@ const style = StyleSheet.create({
 		backgroundColor: "#ffffff",
 		elevation: 10,
 		width: width - 40,
-		margin: 10,
+		marginHorizontal: 20,
+		marginVertical: 10,
 		borderRadius: 20
 	},
 	cardImage: {
