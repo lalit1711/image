@@ -9,10 +9,19 @@ import {
 	Pressable
 } from "react-native";
 import Icon from "react-native-vector-icons/FontAwesome";
+import { useDispatch, useSelector } from "react-redux";
 import Tag from "../components/tag";
+import { setSelectedImage } from "../config/store";
 
 function DetailedImage({ navigation, ...props }) {
-	const data = props.route.params.image;
+	const data = useSelector(state => state.selectedImage);
+	const dispatch = useDispatch();
+
+	const goBack = () => {
+		dispatch(setSelectedImage(null));
+		navigation.navigate("Main");
+	};
+	if (!data) return null;
 	return (
 		<SafeAreaView style={{ flex: 1, backgroundColor: "#ffffff" }}>
 			<View style={style.backgroundImageContainer}>
@@ -20,7 +29,7 @@ function DetailedImage({ navigation, ...props }) {
 					style={style.backgroundImage}
 					source={{ uri: data.largeImageURL }}>
 					<View style={style.header}>
-						<Pressable onPress={() => navigation.navigate("Main")}>
+						<Pressable onPress={goBack}>
 							<View style={style.headerBtn}>
 								<Icon name="chevron-left" size={20} />
 							</View>
