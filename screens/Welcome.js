@@ -1,6 +1,8 @@
-import React from "react";
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { StyleSheet, SafeAreaView, Image, View, Text } from "react-native";
 import Pressable from "react-native/Libraries/Components/Pressable/Pressable";
+import { getImages } from "../config/store";
 
 const Welcome = ({ navigation }) => {
 	return (

@@ -8,13 +8,18 @@ import {
 } from "react-native";
 import { FlatList, TextInput } from "react-native-gesture-handler";
 import Icon from "react-native-vector-icons/FontAwesome";
-import Card from "../components/image/Card";
+import Card from "../components/card";
 import { _getImages } from "../api/getImages";
 import { deBouncingFunction } from "../helpers/util";
 import { StatusBar } from "expo-status-bar";
+import { useDispatch, useSelector } from "react-redux";
+import { getImages } from "../config/store";
+import NoImage from "../components/noImage";
 
 const Main = ({ navigation }) => {
-	const [images, setImages] = useState([]);
+	const images = useSelector(state => state.images);
+	const dispatch = useDispatch();
+
 	const [offSet, setOffSet] = useState(1);
 	const [loading, setLoading] = useState(false);
 	const [key, setKey] = useState("");
@@ -26,10 +31,10 @@ const Main = ({ navigation }) => {
 
 	const fetchImages = keyword => {
 		setLoading(true);
-		setImages([]);
+		addImagesToStore([]);
 		_getImages(keyword)
 			.then(res => {
-				setImages(res.data.hits);
+				addImagesToStore(res.data.hits);
 				setOffSet(1);
 				setLoading(false);
 			})
@@ -41,7 +46,7 @@ const Main = ({ navigation }) => {
 			setLoading(true);
 			_getImages(key, offSet)
 				.then(res => {
-					setImages([...images, ...res.data.hits]);
+					addImagesToStore([...images, ...res.data.hits]);
 					setOffSet(offSet + 1);
 					setLoading(false);
 				})
@@ -49,7 +54,12 @@ const Main = ({ navigation }) => {
 		}
 	};
 
+	const addImagesToStore = img => {
+		dispatch(getImages(img));
+	};
+
 	const delayFunction = useCallback(deBouncingFunction(searchImage, 1000), []);
+
 	return (
 		<SafeAreaView style={{ flex: 1, backgroundColor: "#ffffff" }}>
 			<StatusBar translucent={false} color="white" />
@@ -80,9 +90,10 @@ const Main = ({ navigation }) => {
 					onEndReached={distanceFromEnd => endReached(distanceFromEnd)}
 					onEndReachedThreshold={0.1}
 					renderItem={(item, index) => (
-						<Card image={item} key={item.index} navigation={navigation} />
+						<Card image={item} navigation={navigation} />
 					)}
 					keyExtractor={(item, index) => index}
+					ListEmptyComponent={<NoImage />}
 				/>
 			</View>
 			<View style={style.activity}>
