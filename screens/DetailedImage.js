@@ -9,6 +9,7 @@ import {
 	Pressable
 } from "react-native";
 import Icon from "react-native-vector-icons/FontAwesome";
+import Tag from "../components/tag";
 
 function DetailedImage({ navigation, ...props }) {
 	const data = props.route.params.image;
@@ -73,14 +74,6 @@ function DetailedImage({ navigation, ...props }) {
 	);
 }
 
-const Tag = ({ tag }) => {
-	return (
-		<View style={style.tag}>
-			<Text style={{ color: "#ffffff" }}>{tag}</Text>
-		</View>
-	);
-};
-
 const style = StyleSheet.create({
 	backgroundImageContainer: {
 		elevation: 20,
@@ -128,16 +121,6 @@ const style = StyleSheet.create({
 	userName: {
 		fontSize: 30,
 		fontWeight: "bold"
-	},
-	tag: {
-		backgroundColor: "#63A4F7",
-		color: "#ffffff",
-		padding: 10,
-		height: 30,
-		borderRadius: 10,
-		alignItems: "center",
-		justifyContent: "center",
-		marginRight: 5
 	}
 });
 

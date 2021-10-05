@@ -1,19 +1,12 @@
-import React, { useCallback, useEffect, useState, useRef } from "react";
+import React, { useCallback, useState } from "react";
 import {
-	StyleSheet,
 	SafeAreaView,
 	View,
-	ScrollView,
 	Text,
-	Dimensions,
-	Image,
-	ActivityIndicator
+	ActivityIndicator,
+	StyleSheet
 } from "react-native";
-import {
-	FlatList,
-	TextInput,
-	TouchableOpacity
-} from "react-native-gesture-handler";
+import { FlatList, TextInput } from "react-native-gesture-handler";
 import Icon from "react-native-vector-icons/FontAwesome";
 import Card from "../components/image/Card";
 import { _getImages } from "../api/getImages";
@@ -60,7 +53,6 @@ const Main = ({ navigation }) => {
 	return (
 		<SafeAreaView style={{ flex: 1, backgroundColor: "#ffffff" }}>
 			<StatusBar translucent={false} color="white" />
-
 			<View
 				style={{
 					flexDirection: "row",
@@ -90,6 +82,7 @@ const Main = ({ navigation }) => {
 					renderItem={(item, index) => (
 						<Card image={item} key={item.index} navigation={navigation} />
 					)}
+					keyExtractor={(item, index) => index}
 				/>
 			</View>
 			<View style={style.activity}>
@@ -99,7 +92,7 @@ const Main = ({ navigation }) => {
 	);
 };
 
-const style = StyleSheet.create({
+export const style = StyleSheet.create({
 	inputContainer: {
 		height: 50,
 		backgroundColor: "#E3DFDF",
@@ -133,4 +126,5 @@ const style = StyleSheet.create({
 		alignItems: "center"
 	}
 });
+
 export default Main;
